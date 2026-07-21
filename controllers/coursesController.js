@@ -41,6 +41,24 @@ const removeCourse = (req, res) => {
     res.json(deleted);
 };
 
+
+
+
+import courseService from '../services/courses.service.js';
+
+export const getCourseById = (req, res) => {
+    const courseId = req.params.id;
+    const course = courseService.getCourseById(courseId);
+
+    if (!course) {
+        // החזרת סטטוס 404 אם הקורס לא נמצא
+        return res.status(404).json({ error: 'Course not found' });
+    }
+
+    res.status(200).json(course);
+};
+
+
 module.exports = {
     getCourses,
     getCourse,

@@ -38,3 +38,22 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`השרת רץ על http://localhost:${PORT}`);
 });
+
+
+
+import express from 'express';
+import authMiddleware from './middlewares/auth.js';
+import courseRoutes from './routes/courses.routes.js';
+
+const app = express();
+
+app.use(express.json());
+
+// הפעלת ה-Middleware על כל הקריאות לשרת
+app.use(authMiddleware);
+
+app.use('/courses', courseRoutes);
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
