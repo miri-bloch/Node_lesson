@@ -1,14 +1,24 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ייבוא הנתבים המודולריים
 const coursesRouter = require('./routes/coursesRouter');
 const studentsRouter = require('./routes/studentsRouter');
 const enrollmentsRouter = require('./routes/enrollmentsRouter');
+const authMiddleware = require('./middlewares/authMiddleware');
+const loggerMiddleware = require('./middlewares/loggerMiddleware');
 
 // Middleware גלובלי לפענוח JSON
 app.use(express.json());
+
+// Middleware לוגר - מדפיס כל בקשה שמגיעה לשרת
+app.use(loggerMiddleware);
+
+// Middleware הגנה - בודק את ה-header auth-key
+app.use(authMiddleware);
 
 // נתיב ראשי לבדיקה
 app.get('/', (req, res) => {
@@ -37,23 +47,4 @@ app.use((err, req, res, next) => {
 // הפעלת השרת
 app.listen(PORT, () => {
     console.log(`השרת רץ על http://localhost:${PORT}`);
-});
-
-
-
-import express from 'express';
-import authMiddleware from './middlewares/auth.js';
-import courseRoutes from './routes/courses.routes.js';
-
-const app = express();
-
-app.use(express.json());
-
-// הפעלת ה-Middleware על כל הקריאות לשרת
-app.use(authMiddleware);
-
-app.use('/courses', courseRoutes);
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
 });

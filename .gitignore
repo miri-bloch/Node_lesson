@@ -1,1 +1,11 @@
 /node_modules
+
+# קבצי משתני סביבה (סודות) - לא להעלות ל-git
+.env
+.env.local
+.env.*.local
+
+# קבצי עזר ומסמכי דרישות - לא להעלות
+out.txt
+server.log
+*.pdf
